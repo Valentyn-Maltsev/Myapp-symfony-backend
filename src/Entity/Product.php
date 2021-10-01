@@ -35,7 +35,7 @@ class Product
     /**
      * @ORM\Column(type="datetime")
      */
-    private $areatedAt;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -51,6 +51,13 @@ class Product
      * @ORM\Column(type="boolean")
      */
     private $isDeleted;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->isPublished = false;
+        $this->isDeleted = false;
+    }
 
     public function getId(): ?int
     {
@@ -93,14 +100,14 @@ class Product
         return $this;
     }
 
-    public function getAreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->areatedAt;
+        return $this->createdAt;
     }
 
-    public function setAreatedAt(\DateTimeInterface $areatedAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->areatedAt = $areatedAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
