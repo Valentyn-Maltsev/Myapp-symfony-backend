@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\EditProductFormType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,16 +65,10 @@ class DefaultController extends AbstractController
             $product = new Product();
         }
 
-        $form = $this->createFormBuilder($product)
-            ->add('title', TextType::class)
-            ->add('price', NumberType::class)
-            ->add('quantity', IntegerType::class)
-            ->getForm();
-
+        $form = $this->createForm(EditProductFormType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
             $entityManager->persist($product);
             $entityManager->flush();
 
