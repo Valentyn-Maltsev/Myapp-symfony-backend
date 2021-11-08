@@ -20,7 +20,9 @@
                             {{ form_errors(form.title) }}
                         </div>
                     </div>
-
+                    {{ form_row(form.price) }}
+                    {{ form_row(form.quantity) }}
+                
                     <input type="submit" value="Send">
                 {{ form_end(form) }}
             </div>
