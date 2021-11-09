@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/home", methods="GET", name="homepage")
+     * @Route("/home", methods="GET", name="main_homepage")
      */
     public function index(ProductRepository $productRepository): Response
     {

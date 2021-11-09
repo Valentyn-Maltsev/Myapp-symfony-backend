@@ -22,6 +22,17 @@ security:
             lazy: true
             provider: app_user_provider
 
+            custom_authenticator: App\Security\LoginFormAuthenticator
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # cookie saved for a 1 week
+                path: /
+
+            logout:
+                path: main_logout
+                target: main_login
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
