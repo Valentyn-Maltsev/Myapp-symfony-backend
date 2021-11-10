@@ -62,6 +62,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $zipcode;
 
+    public function __construct()
+    {
+        $this->setIsDeleted( false);
+    }
+
     /**
      * @ORM\Column(type="boolean")
      */
@@ -120,6 +125,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+    /**
+     * @return bool
+     */
+    public function hasAccessToAdminSection(): bool
+    {
+        $hasAccess = false;
+
+        foreach ($this->getRoles() as $role) {
+            if ($hasAccess) {
+                continue;
+            }
+
+            $hasAccess = in_array($role, UserStaticStorage::getUserRoleHasAccessToAdminSection());
+        }
+
+        return $hasAccess;
+    }
+
 
     /**
      * @see PasswordAuthenticatedUserInterface
