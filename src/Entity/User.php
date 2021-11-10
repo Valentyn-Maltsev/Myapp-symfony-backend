@@ -121,6 +121,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    /**
+     * @return bool
+     */
+    public function hasAccessToAdminSection(): bool
+    {
+        $hasAccess = false;
+
+        foreach ($this->getRoles() as $role) {
+            if ($hasAccess) {
+                continue;
+            }
+
+            $hasAccess = in_array($role, UserStaticStorage::getUserRoleHasAccessToAdminSection());
+        }
+
+        return $hasAccess;
+    }
+
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
