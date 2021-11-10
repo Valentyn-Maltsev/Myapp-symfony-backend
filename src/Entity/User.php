@@ -62,6 +62,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $zipcode;
 
+    public function __construct()
+    {
+        $this->setIsDeleted( false);
+    }
+
     /**
      * @ORM\Column(type="boolean")
      */
