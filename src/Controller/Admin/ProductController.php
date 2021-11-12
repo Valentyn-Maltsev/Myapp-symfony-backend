@@ -49,10 +49,9 @@ class ProductController extends AbstractController
 
         return $this->render('admin/product/edit.html.twig', [
             'form' => $form->createView(),
-            'product' => $product
+            'product' => $product,
+            'images' => $product->getProductImages()->getValues()
         ]);
-
-
     }
 
 
