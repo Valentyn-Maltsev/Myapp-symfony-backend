@@ -40,9 +40,13 @@ class ProductManager
         $this->entityManager->flush();
     }
 
-    public function remove()
+    /**
+     * @param Product $product
+     */
+    public function remove(Product $product)
     {
-        
+        $product->setIsDeleted(true);
+        $this->save($product);
     }
 
     /**
