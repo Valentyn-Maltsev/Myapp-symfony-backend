@@ -23,6 +23,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo pdo_mysql
 
+# PHP GD (library for working with images)
+RUN apt-get install -y libpng-dev  &&  docker-php-ext-install gd
+
 RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/bin --filename=composer --quiet
 
 RUN apt-get update && \
