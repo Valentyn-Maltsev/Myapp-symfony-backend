@@ -82,7 +82,23 @@ class ProductImageManager
         $productImage->setFilenameBig($imageBig);
 
         return $productImage;
+    }
 
+    public function removeImageFromProduct(ProductImage $productImage, string $productDit)
+    {
+        $smallFilePath = $productDit . '/' . $productImage->getFilenameSmall();
+        $this->filesystemWorker->remove($smallFilePath);
+
+        $middleFilePath = $productDit . '/' . $productImage->getFilenameMiddle();
+        $this->filesystemWorker->remove($middleFilePath);
+
+        $bigFilePath = $productDit . '/' . $productImage->getFilenameBig();
+        $this->filesystemWorker->remove($bigFilePath);
+
+        $product = $productImage->getProduct();
+        $product->removeProductImage($productImage);
+
+        $this->entityManager->flush();
 
     }
 }

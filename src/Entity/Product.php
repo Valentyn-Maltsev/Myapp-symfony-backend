@@ -174,6 +174,10 @@ class Product
         return $this;
     }
 
+    /**
+     * @param ProductImage $productImage
+     * @return $this
+     */
     public function removeProductImage(ProductImage $productImage): self
     {
         if ($this->productImages->removeElement($productImage)) {
