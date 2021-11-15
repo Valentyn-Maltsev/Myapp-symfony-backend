@@ -38,19 +38,24 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, ProductFormHandler $productFormHandler, Product $product = null) // Symfony find product by parameter id
     {
+        $product = $product ? : new Product();
+
         $form = $this->createForm(EditProductFormType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $product = $productFormHandler->processEditForm($product, $form);
-            
             return $this->redirectToRoute('admin_product_edit', ['id' => $product->getId()]);
         }
+
+        $images = $product->getProductImages()
+            ? $product->getProductImages()->getValues()
+            : [];
 
         return $this->render('admin/product/edit.html.twig', [
             'form' => $form->createView(),
             'product' => $product,
-            'images' => $product->getProductImages()->getValues()
+            'images' => $images
         ]);
     }
 
