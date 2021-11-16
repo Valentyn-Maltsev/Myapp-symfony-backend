@@ -4,6 +4,7 @@ namespace App\Form\Model;
 
 use App\Entity\Product;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EditProductModel
 {
@@ -13,21 +14,30 @@ class EditProductModel
     public $id;
 
     /**
+     * @Assert\NotBlank(message = "Please enter a title")
      * @var string
      */
     public $title;
 
     /**
+     * @Assert\NotBlank(message = "Please enter a price")
+     * @Assert\GreaterThanOrEqual(value = "0")
      * @var string
      */
     public $price;
 
     /**
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     mimeTypesMessage = "Please upload a valid image"
+     * )
      * @var UploadedFile/null
      */
     public $newImage;
 
     /**
+     * @Assert\NotBlank(message = "Please indicate the quantity")
      * @var int
      */
     public $quantity;
