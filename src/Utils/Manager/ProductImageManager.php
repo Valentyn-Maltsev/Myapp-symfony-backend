@@ -9,13 +9,8 @@ use App\Utils\Filesystem\FilesystemWorker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ProductImageManager
+class ProductImageManager extends AbstractBaseManager
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     /**
      * @var string
      */
@@ -32,7 +27,8 @@ class ProductImageManager
 
     public function __construct(EntityManagerInterface $entityManager, FilesystemWorker $filesystemWorker, ImageResizer $imageResizer,string $uploadsTempDir)
     {
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager);
+
         $this->filesystemWorker = $filesystemWorker;
         $this->uploadsTempDir = $uploadsTempDir;
         $this->imageResizer = $imageResizer;
