@@ -4,8 +4,9 @@ namespace App\Utils\Manager;
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 
-class AbstractBaseManager
+abstract class AbstractBaseManager
 {
     /**
      * @var EntityManagerInterface
@@ -15,6 +16,20 @@ class AbstractBaseManager
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @return ObjectRepository
+     */
+    abstract public function getRepository(): ObjectRepository;
+
+    /**
+     * @param string $id
+     * @return object|null
+     */
+    public function find(string $id): ?object
+    {
+        return $this->getRepository()->find($id);
     }
 
     /**
