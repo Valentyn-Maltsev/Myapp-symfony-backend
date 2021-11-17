@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Product;
 use App\Form\EditProductFormType;
 use App\Form\Handler\ProductFormHandler;
+use App\Form\Model\EditProductModel;
 use App\Repository\ProductRepository;
 use App\Utils\Manager\ProductManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,12 +41,21 @@ class ProductController extends AbstractController
     {
         $product = $product ? : new Product();
 
-        $form = $this->createForm(EditProductFormType::class, $product);
+        $editProductModel = EditProductModel::makeFromProduct($product);
+
+        $form = $this->createForm(EditProductFormType::class, $editProductModel);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $product = $productFormHandler->processEditForm($product, $form);
-            return $this->redirectToRoute('admin_product_edit', ['id' => $product->getId()]);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $product = $productFormHandler->processEditForm($editProductModel, $form);
+
+                $this->addFlash('success', 'Your changes were saved');
+
+                return $this->redirectToRoute('admin_product_edit', ['id' => $product->getId()]);
+            } else {
+                $this->addFlash('warning', 'Something went wrong. Please check your form!');
+            }
         }
 
         $images = $product->getProductImages()
@@ -68,6 +78,8 @@ class ProductController extends AbstractController
     public function delete(Product $product, ProductManager $productManager)
     {
         $productManager->remove($product);
+
+        $this->addFlash('warning', 'The product was successfully deleted');
 
         return $this->redirectToRoute('admin_product_list');
     }
