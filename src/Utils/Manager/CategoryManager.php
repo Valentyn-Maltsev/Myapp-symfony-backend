@@ -2,8 +2,9 @@
 
 namespace App\Utils\Manager;
 
+use App\Entity\Product;
 use Doctrine\Persistence\ObjectRepository;
-use Entity\Category;
+use App\Entity\Category;
 
 class CategoryManager extends AbstractBaseManager
 {
@@ -13,5 +14,22 @@ class CategoryManager extends AbstractBaseManager
     public function getRepository(): ObjectRepository
     {
         return $this->entityManager->getRepository(Category::class);
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function remove(object $category)
+    {
+        $category->setIsDeleted(true);
+
+        /** @var Product $product */
+        foreach ($category->getProducts()->getValues() as $product) {
+            $product->setIsDeleted(true);
+        }
+
+        $this->save($category);
+
+//        dd($category, $category->getProducts()->getValues());
     }
 }
