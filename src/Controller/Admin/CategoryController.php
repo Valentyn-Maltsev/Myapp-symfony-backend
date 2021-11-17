@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Category;
 use App\Form\EditCategoryFormType;
 use App\Form\Handler\CategoryFormHandler;
+use App\Form\Model\EditCategoryModel;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,15 +38,15 @@ class CategoryController extends AbstractController
      */
     public function edit(Request $request, CategoryFormHandler $categoryFormHandler, Category $category = null) // Symfony find product by parameter id
     {
-        if (!$category) {
-            $category = new Category();
-        }
+        $category = $category ? : new Category();
 
-        $form = $this->createForm(EditCategoryFormType::class, $category);
+        $editCategoryModel = EditCategoryModel::makeFromCategory($category);
+
+        $form = $this->createForm(EditCategoryFormType::class, $editCategoryModel);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $categoryFormHandler->processEditForm($category);
+            $category = $categoryFormHandler->processEditForm($editCategoryModel);
 
             return $this->redirectToRoute('admin_category_edit', ['id' => $category->getId()]);
         }

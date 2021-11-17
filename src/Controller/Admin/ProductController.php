@@ -62,6 +62,8 @@ class ProductController extends AbstractController
             ? $product->getProductImages()->getValues()
             : [];
 
+        dd($product);
+
         return $this->render('admin/product/edit.html.twig', [
             'form' => $form->createView(),
             'product' => $product,
