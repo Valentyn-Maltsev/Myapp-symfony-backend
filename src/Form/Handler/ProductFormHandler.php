@@ -46,7 +46,7 @@ class ProductFormHandler
         $product->setDescription($editProductModel->description);
         $product->setIsPublished($editProductModel->isPublished);
         $product->setIsDeleted($editProductModel->isDeleted);
-
+        $product->setCategory($editProductModel->category);
 
         // ADD NEW IMAGE WITH DIFFERENT SIZES TO THE PRODUCT
         // 1. Save product's changes (+)

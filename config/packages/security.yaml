@@ -24,7 +24,7 @@ security:
             lazy: true
             provider: app_user_provider
             custom_authenticators:
-                - App\Security\Admin\LoginFormAuthenticator
+                - App\Security\Authenticator\Admin\LoginFormAuthenticator
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
@@ -36,7 +36,7 @@ security:
             provider: app_user_provider
 
             custom_authenticators:
-                - App\Security\LoginFormAuthenticator
+                - App\Security\Authenticator\Main\LoginFormAuthenticator
 
             remember_me:
                 secret: '%kernel.secret%'
