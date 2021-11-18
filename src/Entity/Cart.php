@@ -22,7 +22,7 @@ class Cart
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $sessioId;
+    private $sessionId;
 
     /**
      * @ORM\Column(type="datetime")
@@ -45,14 +45,14 @@ class Cart
         return $this->id;
     }
 
-    public function getSessioId(): ?string
+    public function getSessionId(): ?string
     {
-        return $this->sessioId;
+        return $this->sessionId;
     }
 
-    public function setSessioId(string $sessioId): self
+    public function setSessionId(string $sessionId): self
     {
-        $this->sessioId = $sessioId;
+        $this->sessionId = $sessionId;
 
         return $this;
     }
