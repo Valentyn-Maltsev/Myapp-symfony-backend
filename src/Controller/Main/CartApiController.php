@@ -35,10 +35,10 @@ class CartApiController extends AbstractController
         $productId = $request->request->get('productId');
 
         $product = $productRepository->findOneBy(['uuid' => $productId]);
-        $cart = $cartRepository->findOneBy(['sessioId' => $phpSessionId]);
+        $cart = $cartRepository->findOneBy(['sessionId' => $phpSessionId]);
         if (!$cart) {
             $cart = new Cart();
-            $cart->setSessioId($phpSessionId);
+            $cart->setSessionId($phpSessionId);
         }
 
         $cartProduct = $cartProductRepository->findOneBy(['cart' => $cart, 'product' => $product]);
