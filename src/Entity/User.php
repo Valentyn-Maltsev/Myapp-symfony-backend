@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -65,12 +67,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->setIsDeleted( false);
+        $this->orders = new ArrayCollection();
     }
 
     /**
      * @ORM\Column(type="boolean")
      */
     private $isDeleted;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="owner")
+     */
+    private $orders;
 
     public function getId(): ?int
     {
@@ -249,6 +257,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsDeleted(?bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getOwner() === $this) {
+                $order->setOwner(null);
+            }
+        }
 
         return $this;
     }
