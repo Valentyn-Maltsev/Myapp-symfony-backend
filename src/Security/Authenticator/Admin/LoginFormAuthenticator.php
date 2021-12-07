@@ -64,7 +64,7 @@ class LoginFormAuthenticator extends AbstractAuthenticator
 
         $user = $this->userRepository->findOneBy(['email' => $email]);
 
-        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (!$user) {
             throw new UsernameNotFoundException('Email could not be found');
         }
 
