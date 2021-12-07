@@ -12,6 +12,7 @@ use App\Form\Model\EditCategoryModel;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Utils\Manager\CategoryManager;
+use App\Utils\Manager\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,8 +52,6 @@ class UserController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
 
-//                dd($form, $form->get('plainPassword')->getData(), $user);
-
                 $user = $userFormHandler->processEditForm($form);
 
                 $this->addFlash('success', 'Your changes were saved');
@@ -74,12 +73,12 @@ class UserController extends AbstractController
      * @Route ("/delete/{id}", name="delete")
      * @param $id
      */
-    public function delete(Category $category, CategoryManager $categoryManager)
+    public function delete(User $user, UserManager $userManager)
     {
-//        $categoryManager->remove($category);
-//
-//        $this->addFlash('warning', 'The category was successfully deleted');
+        $userManager->remove($user);
 
-        return $this->redirectToRoute('admin_category_list');
+        $this->addFlash('warning', 'The user was successfully deleted');
+
+        return $this->redirectToRoute('admin_user_list');
     }
 }
