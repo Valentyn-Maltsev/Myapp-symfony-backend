@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * @ApiResource (
@@ -23,8 +24,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          }
  *     },
  *     itemOperations={
- *          "get"={},
- *          "put"={}
+ *          "get"={
+ *              "normalization_context"={"groups"="product:item"}
+ *          },
+ *          "patch"={
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "normalization_context"={"groups"="product:item:write"}
+ *          }
  *     }
  * )
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -35,31 +41,34 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups ({"product:list"})
+     *
+     * @ApiProperty (identifier=false)
      */
     private $id;
 
     /**
      * @ORM\Column (type="uuid", nullable=false)
-     * @Groups ({"product:list"})
+     * @Groups ({"product:list", "product:item"})
+     *
+     * @ApiProperty (identifier=true)
      */
     private $uuid;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"product:list", "product:list:write"})
+     * @Groups ({"product:list", "product:item", "product:list:write", "product:item:write"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
-     * @Groups ({"product:list", "product:list:write"})
+     * @Groups ({"product:list", "product:item", "product:list:write", "product:item:write"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups ({"product:list", "product:list:write"})
+     * @Groups ({"product:list", "product:item", "product:list:write", "product:item:write"})
      */
     private $quantity;
 
@@ -96,7 +105,7 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     * @Groups ({"product:list", "product:list:write"})
+     * @Groups ({"product:list", "product:item", "product:list:write", "product:item:write"})
      */
     private $category;
 
