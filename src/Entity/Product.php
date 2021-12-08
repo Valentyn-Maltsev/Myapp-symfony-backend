@@ -2,14 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource (
+ *     collectionOperations={
+ *          "get"={
+ *              "normalization_context"={"groups"="product:list"}
+ *          },
+ *          "post"={}
+ *     },
+ *     itemOperations={
+ *          "get"={},
+ *          "put"={}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
@@ -18,16 +32,19 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ({"product:list"})
      */
     private $id;
 
     /**
      * @ORM\Column (type="uuid", nullable=false)
+     * @Groups ({"product:list"})
      */
     private $uuid;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups ({"product:list"})
      */
     private $title;
 
