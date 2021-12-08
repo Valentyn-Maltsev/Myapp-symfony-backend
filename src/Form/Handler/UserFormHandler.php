@@ -36,7 +36,7 @@ class UserFormHandler
         /** @var User $user */
         $user = $form->getData();
 
-        if (!$user->id) {
+        if (!$user->getId()) {
             $user->setEmail($newEmail);
         }
 
