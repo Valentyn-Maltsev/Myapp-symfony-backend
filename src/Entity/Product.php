@@ -17,7 +17,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          "get"={
  *              "normalization_context"={"groups"="product:list"}
  *          },
- *          "post"={}
+ *          "post"={
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "normalization_context"={"groups"="product:list:write"}
+ *          }
  *     },
  *     itemOperations={
  *          "get"={},
@@ -44,17 +47,19 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups ({"product:list"})
+     * @Groups ({"product:list", "product:list:write"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @Groups ({"product:list", "product:list:write"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups ({"product:list", "product:list:write"})
      */
     private $quantity;
 
@@ -91,6 +96,7 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * @Groups ({"product:list", "product:list:write"})
      */
     private $category;
 
