@@ -11,7 +11,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiProperty;
-
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ApiResource (
  *     collectionOperations={
@@ -41,6 +43,10 @@ use ApiPlatform\Core\Annotation\ApiProperty;
  *     },
  *     paginationEnabled=true
  * )
+ * @ApiFilter (BooleanFilter::class, properties={"isPublished"})
+ * @ApiFilter (SearchFilter::class, properties={
+ *          "category": "exact"
+ *      })
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
